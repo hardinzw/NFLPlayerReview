@@ -13,6 +13,7 @@ builder.Services.AddTransient<Seed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<INFLPlayerRepository, NFLPlayerRepository>();
 builder.Services.AddScoped<INFLTeamRepository, NFLTeamRepository>();
+builder.Services.AddScoped<INFLPositionRepository, NFLPositionRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("NFLPlayerReviewDB")));

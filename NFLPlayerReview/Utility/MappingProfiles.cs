@@ -10,6 +10,7 @@ namespace NFLPlayerReview.Utility
         {
             CreateMap<NFLPlayer, NFLPlayerDto>();
             CreateMap<NFLTeam, NFLTeamDto>();
+            CreateMap<NFLPosition, NFLPositionDto>();
         }
     }
 }
