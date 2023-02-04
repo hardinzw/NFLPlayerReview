@@ -74,5 +74,39 @@ namespace NFLPlayerReview.Controllers
 
             return Ok(player);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePlayer([FromQuery] int teamID, [FromQuery] int positionID, [FromBody] NFLPlayerDto playerCreate)
+        {
+            if (playerCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var player = _playerRepository.GetNFLPlayers().Where(p => p.Name.Trim().ToUpper() == playerCreate.Name.TrimEnd().ToUpper()).FirstOrDefault();
+
+            if (player != null)
+            {
+                ModelState.AddModelError("", "Player Already Exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var playerMap = _mapper.Map<NFLPlayer>(playerCreate);
+
+            if (!_playerRepository.CreatePlayer(teamID, positionID, playerMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Player created.");
+        }
     }
 }

@@ -52,7 +52,7 @@ namespace NFLPlayerReview.Controllers
             return Ok(reviewer);
         }
 
-        [HttpGet("reviewer/{reviewerID}")]
+        [HttpGet("{reviewerID}/reviews")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Reviewer>))]
         public IActionResult GetReviewsByReviewer(int reviewerID)
         {
@@ -61,14 +61,14 @@ namespace NFLPlayerReview.Controllers
                 return NotFound();
             }
 
-            var reviewer = _mapper.Map<List<ReviewDto>>(_reviewerRepository.GetReviewsByReviewer(reviewerID));
+            var reviews = _mapper.Map<List<ReviewDto>>(_reviewerRepository.GetReviewsByReviewer(reviewerID));
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(reviewer);
+            return Ok(reviews);
         }
     }
 }

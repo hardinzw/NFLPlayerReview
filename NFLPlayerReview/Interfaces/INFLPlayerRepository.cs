@@ -9,5 +9,7 @@ namespace NFLPlayerReview.Interfaces
         NFLPlayer GetNFLPlayerByName(string name);
         string GetNFLPlayerReview(int id);
         bool NFLPlayerExists(int id);
+        bool CreatePlayer(int teamID, int positionID, NFLPlayer player);
+        bool Save();
     }
 }

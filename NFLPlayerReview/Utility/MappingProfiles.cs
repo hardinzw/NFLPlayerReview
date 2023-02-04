@@ -9,6 +9,7 @@ namespace NFLPlayerReview.Utility
         public MappingProfiles()
         {
             CreateMap<NFLPlayer, NFLPlayerDto>();
+            CreateMap<NFLPlayerDto, NFLPlayer>();
             CreateMap<NFLTeam, NFLTeamDto>();
             CreateMap<NFLPosition, NFLPositionDto>();
             CreateMap<NFLDivision, NFLDivisionDto>();

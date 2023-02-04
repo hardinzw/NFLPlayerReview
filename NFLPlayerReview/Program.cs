@@ -3,6 +3,7 @@ using NFLPlayerReview;
 using NFLPlayerReview.Data;
 using NFLPlayerReview.Interfaces;
 using NFLPlayerReview.Repository;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>();
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<INFLPlayerRepository, NFLPlayerRepository>();
 builder.Services.AddScoped<INFLTeamRepository, NFLTeamRepository>();
