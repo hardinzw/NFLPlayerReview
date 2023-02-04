@@ -12,6 +12,8 @@ namespace NFLPlayerReview.Utility
             CreateMap<NFLTeam, NFLTeamDto>();
             CreateMap<NFLPosition, NFLPositionDto>();
             CreateMap<NFLDivision, NFLDivisionDto>();
+            CreateMap<Review, ReviewDto>();
+            CreateMap<Reviewer, ReviewerDto>();
         }
     }
 }

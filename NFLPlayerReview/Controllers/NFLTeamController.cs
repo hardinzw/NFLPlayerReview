@@ -63,14 +63,14 @@ namespace NFLPlayerReview.Controllers
                 return NotFound();
             }
 
-            var teams = _mapper.Map<List<NFLPlayerDto>>(_teamRepository.GetNFLPlayerByTeam(teamID));
+            var team = _mapper.Map<List<NFLPlayerDto>>(_teamRepository.GetNFLPlayerByTeam(teamID));
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(teams);
+            return Ok(team);
         }
 
         [HttpGet("{playerID}/team")]
@@ -83,14 +83,14 @@ namespace NFLPlayerReview.Controllers
                 return NotFound();
             }
 
-            var players = _mapper.Map<List<NFLTeamDto>>(_teamRepository.GetNFLTeamByPlayer(playerID));
+            var player = _mapper.Map<List<NFLTeamDto>>(_teamRepository.GetNFLTeamByPlayer(playerID));
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(players);
+            return Ok(player);
         }
     }
 }
