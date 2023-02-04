@@ -52,5 +52,45 @@ namespace NFLPlayerReview.Controllers
 
             return Ok(team);
         }
+
+        [HttpGet("{teamID}/player")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<NFLTeam>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetNFLPlayerByTeam(int teamID)
+        {
+            if (!_teamRepository.NFLTeamExists(teamID))
+            {
+                return NotFound();
+            }
+
+            var teams = _mapper.Map<List<NFLPlayerDto>>(_teamRepository.GetNFLPlayerByTeam(teamID));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(teams);
+        }
+
+        [HttpGet("{playerID}/team")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<NFLTeam>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetNFLTeamByPlayer(int playerID)
+        {
+            if (!_teamRepository.NFLTeamExists(playerID))
+            {
+                return NotFound();
+            }
+
+            var players = _mapper.Map<List<NFLTeamDto>>(_teamRepository.GetNFLTeamByPlayer(playerID));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(players);
+        }
     }
 }

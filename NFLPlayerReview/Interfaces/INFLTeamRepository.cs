@@ -6,6 +6,8 @@ namespace NFLPlayerReview.Interfaces
     {
         ICollection<NFLTeam> GetNFLTeams();
         NFLTeam GetNFLTeamByID(int id);
+        ICollection<NFLTeam> GetNFLTeamByPlayer(int playerID);
+        ICollection<NFLPlayer> GetNFLPlayerByTeam(int teamID);
         bool NFLTeamExists(int id);
     }
 }

@@ -23,6 +23,16 @@ namespace NFLPlayerReview.Repository
             return _context.NFLTeams.Where(t => t.Id == id).FirstOrDefault();
         }
 
+        public ICollection<NFLTeam> GetNFLTeamByPlayer(int playerID)
+        {
+            return _context.PlayerTeams.Where(p => p.Player.Id == playerID).Select(t => t.Team).ToList();
+        }
+
+        public ICollection<NFLPlayer> GetNFLPlayerByTeam(int teamID)
+        {
+            return _context.PlayerTeams.Where(t => t.Team.Id == teamID).Select(p => p.Player).ToList();
+        }
+
         public bool NFLTeamExists(int id)
         {
             return _context.NFLTeams.Any(t => t.Id == id);
