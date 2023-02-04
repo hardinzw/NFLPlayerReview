@@ -23,11 +23,6 @@ namespace NFLPlayerReview.Repository
             return _context.NFLTeams.Where(t => t.Id == id).FirstOrDefault();
         }
 
-        public NFLTeam GetNFLTeamByName(string name)
-        {
-            return _context.NFLTeams.Where(t => t.Name == name).FirstOrDefault();
-        }
-
         public bool NFLTeamExists(int id)
         {
             return _context.NFLTeams.Any(t => t.Id == id);

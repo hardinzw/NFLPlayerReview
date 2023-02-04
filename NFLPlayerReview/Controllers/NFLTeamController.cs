@@ -52,20 +52,5 @@ namespace NFLPlayerReview.Controllers
 
             return Ok(team);
         }
-
-        //[HttpGet("{name}")]
-        //[ProducesResponseType(200, Type = typeof(IEnumerable<NFLTeam>))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetNFLTeamByName(string name)
-        //{
-        //    var team = _mapper.Map<NFLTeamDto>(_teamRepository.GetNFLTeamByName(name));
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    return Ok(team);
-        //}
     }
 }

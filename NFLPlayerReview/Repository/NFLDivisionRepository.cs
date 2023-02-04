@@ -22,6 +22,16 @@ namespace NFLPlayerReview.Repository
             return _context.NFLDivisions.Where(t => t.Id == id).FirstOrDefault();
         }
 
+        public NFLDivision GetNFLDivisionByTeam(int teamID)
+        {
+            return _context.NFLTeams.Where(t => t.Id == teamID).Select(d => d.Division).FirstOrDefault();
+        }
+
+        public ICollection<NFLTeam> GetNFLTeamByDivision(int divisionID)
+        {
+            return _context.NFLTeams.Where(d => d.Division.Id == divisionID).ToList();
+        }
+
         public bool NFLDivisionExists(int id)
         {
             return _context.NFLDivisions.Any(t => t.Id == id);

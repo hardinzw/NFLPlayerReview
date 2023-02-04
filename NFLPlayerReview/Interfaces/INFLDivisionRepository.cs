@@ -6,6 +6,8 @@ namespace NFLPlayerReview.Interfaces
     {
         ICollection<NFLDivision> GetNFLDivisions();
         NFLDivision GetNFLDivisionByID(int id);
+        NFLDivision GetNFLDivisionByTeam(int teamID);
+        ICollection<NFLTeam> GetNFLTeamByDivision(int divisionID);
         bool NFLDivisionExists(int id);
     }
 }

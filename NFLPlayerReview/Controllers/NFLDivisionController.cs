@@ -19,10 +19,10 @@ namespace NFLPlayerReview.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<NFLTeam>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<NFLDivision>))]
         public IActionResult GetNFLDivisions()
         {
-            var divisions = _mapper.Map<List<NFLDivsionDto>>(_divisionRepository.GetNFLDivisions());
+            var divisions = _mapper.Map<List<NFLDivisionDto>>(_divisionRepository.GetNFLDivisions());
 
             if (!ModelState.IsValid)
             {
@@ -33,7 +33,7 @@ namespace NFLPlayerReview.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<NFLTeam>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<NFLDivision>))]
         [ProducesResponseType(400)]
         public IActionResult GetNFLDivisionByID(int id)
         {
@@ -42,7 +42,7 @@ namespace NFLPlayerReview.Controllers
                 return NotFound();
             }
 
-            var division = _mapper.Map<NFLTeamDto>(_divisionRepository.GetNFLDivisionByID(id));
+            var division = _mapper.Map<NFLDivisionDto>(_divisionRepository.GetNFLDivisionByID(id));
 
             if (!ModelState.IsValid)
             {
@@ -51,5 +51,45 @@ namespace NFLPlayerReview.Controllers
 
             return Ok(division);
         }
+
+        [HttpGet("/teams/{teamID}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<NFLDivision>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetNFLDivisionByTeam(int teamID)
+        {
+            if (!_divisionRepository.NFLDivisionExists(teamID))
+            {
+                return NotFound();
+            }
+
+            var team = _mapper.Map<NFLDivisionDto>(_divisionRepository.GetNFLDivisionByTeam(teamID));
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(team);
+        }
+
+        //[HttpGet("/divisions/{divisionID}")]
+        //[ProducesResponseType(200, Type = typeof(IEnumerable<NFLTeam>))]
+        //[ProducesResponseType(400)]
+        //public IActionResult GetNFLTeamByDivision(int divisionID)
+        //{
+        //    if (!_divisionRepository.NFLDivisionExists(divisionID))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var division = _mapper.Map<NFLTeamDto>(_divisionRepository.GetNFLTeamByDivision(divisionID));
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    return Ok(division);
+        //}
     }
 }

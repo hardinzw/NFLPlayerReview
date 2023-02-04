@@ -55,21 +55,6 @@ namespace NFLPlayerReview.Controllers
             return Ok(player);
         }
 
-        //[HttpGet("{id}/name")]
-        //[ProducesResponseType(200, Type = typeof(IEnumerable<NFLPlayer>))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetNFLPlayerByName(string name)
-        //{
-        //    var player = _playerRepository.GetNFLPlayerByName(name);
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    return Ok(player);
-        //}
-
         [HttpGet("{id}/review")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<NFLPlayer>))]
         [ProducesResponseType(400)]
