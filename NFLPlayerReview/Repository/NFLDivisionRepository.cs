@@ -44,6 +44,12 @@ namespace NFLPlayerReview.Repository
             return Save();
         }
 
+        public bool UpdateDivision(NFLDivision division)
+        {
+            _context.Update(division);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

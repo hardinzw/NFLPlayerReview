@@ -105,5 +105,42 @@ namespace NFLPlayerReview.Controllers
 
             return Ok("Division successuflly created.");
         }
+
+        [HttpPut("{divisionID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateDivision(int divisionID, [FromBody] NFLDivisionDto divisionUpdate)
+        {
+            if (divisionUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (divisionID != divisionUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_divisionRepository.NFLDivisionExists(divisionID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var divisionMap = _mapper.Map<NFLDivision>(divisionUpdate);
+
+            if (!_divisionRepository.UpdateDivision(divisionMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Position successuflly updated.");
+        }
     }
 }

@@ -53,7 +53,7 @@ namespace NFLPlayerReview.Controllers
             return Ok(position);
         }
 
-        [HttpGet("player/{categoryId}")]
+        [HttpGet("player/{positionId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<NFLPosition>))]
         [ProducesResponseType(400)]
         public IActionResult GetNFLPlayerByPosition(int positionId)
@@ -100,6 +100,43 @@ namespace NFLPlayerReview.Controllers
             }
 
             return Ok("Position successuflly created.");
+        }
+
+        [HttpPut("{positionID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdatePosition(int positionID, [FromBody] NFLPositionDto positionUpdate)
+        {
+            if (positionUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (positionID != positionUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_positionRepository.NFLPositionExists(positionID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var positionMap = _mapper.Map<NFLPosition>(positionUpdate);
+
+            if (!_positionRepository.UpdatePosition(positionMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Position successuflly updated.");
         }
     }
 }

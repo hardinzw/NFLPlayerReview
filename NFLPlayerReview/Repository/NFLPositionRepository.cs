@@ -41,6 +41,12 @@ namespace NFLPlayerReview.Repository
             return Save();
         }
 
+        public bool UpdatePosition(NFLPosition position)
+        {
+            _context.Update(position);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

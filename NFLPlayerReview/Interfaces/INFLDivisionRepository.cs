@@ -10,6 +10,7 @@ namespace NFLPlayerReview.Interfaces
         ICollection<NFLTeam> GetNFLTeamByDivision(int divisionID);
         bool NFLDivisionExists(int id);
         bool CreateDivision(NFLDivision division);
+        bool UpdateDivision(NFLDivision division);
         bool Save();
     }
 }

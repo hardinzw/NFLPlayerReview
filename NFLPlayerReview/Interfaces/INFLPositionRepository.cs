@@ -9,6 +9,7 @@ namespace NFLPlayerReview.Interfaces
         ICollection<NFLPlayer> GetNFLPlayerByPosition(int positionId);
         bool NFLPositionExists(int id);
         bool CreatePosition(NFLPosition position);
+        bool UpdatePosition(NFLPosition position);
         bool Save();
     }
 }
