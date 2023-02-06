@@ -13,11 +13,13 @@ namespace NFLPlayerReview.Controllers
     public class NFLPlayerController : Controller
     {
         private readonly INFLPlayerRepository _playerRepository;
+        private readonly IReviewerRepository _reviewRepository;
         private readonly IMapper _mapper;
 
-        public NFLPlayerController(INFLPlayerRepository nFLPlayerRepository, IMapper mapper)
+        public NFLPlayerController(INFLPlayerRepository playerRepository, IReviewerRepository reviewRepository, IMapper mapper)
         {
-            _playerRepository = nFLPlayerRepository;
+            _playerRepository = playerRepository;
+            _reviewRepository = reviewRepository;
             _mapper = mapper;
         }
 
@@ -107,6 +109,43 @@ namespace NFLPlayerReview.Controllers
             }
 
             return Ok("Player created.");
+        }
+
+        [HttpPut("{playerID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdatePlayer(int playerID, [FromQuery] int teamID, [FromQuery] int positionID, [FromBody] NFLPlayerDto playerUpdate)
+        {
+            if (playerUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (playerID != playerUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_playerRepository.NFLPlayerExists(playerID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var playerMap = _mapper.Map<NFLPlayer>(playerUpdate);
+
+            if (!_playerRepository.UpdatePlayer(teamID, positionID, playerMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Player successuflly updated.");
         }
     }
 }

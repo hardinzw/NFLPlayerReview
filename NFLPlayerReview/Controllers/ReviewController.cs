@@ -110,5 +110,42 @@ namespace NFLPlayerReview.Controllers
 
             return Ok("Review successfully created.");
         }
+
+        [HttpPut("{reviewID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateReview(int reviewID, [FromBody] ReviewDto reviewUpdate)
+        {
+            if (reviewUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (reviewID != reviewUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_reviewRepository.ReviewExists(reviewID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var reviewMap = _mapper.Map<Review>(reviewUpdate);
+
+            if (!_reviewRepository.UpdateReview(reviewMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Review successuflly updated.");
+        }
     }
 }

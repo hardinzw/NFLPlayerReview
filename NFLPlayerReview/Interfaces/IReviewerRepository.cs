@@ -9,6 +9,7 @@ namespace NFLPlayerReview.Interfaces
         ICollection<Review> GetReviewsByReviewer(int reviewerID);
         bool ReviewerExists(int id);
         bool CreateReviewer(Reviewer reviewer);
+        bool UpdateReviewer(Reviewer reviewer);
         bool Save();
     }
 }

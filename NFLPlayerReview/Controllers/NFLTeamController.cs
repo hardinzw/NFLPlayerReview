@@ -129,5 +129,42 @@ namespace NFLPlayerReview.Controllers
 
             return Ok("Team created.");
         }
+
+        [HttpPut("{teamID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdatePosition(int teamID, [FromBody] NFLTeamDto teamUpdate)
+        {
+            if (teamUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (teamID != teamUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_teamRepository.NFLTeamExists(teamID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var teamMap = _mapper.Map<NFLTeam>(teamUpdate);
+
+            if (!_teamRepository.UpdateTeam(teamMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Team successuflly updated.");
+        }
     }
 }

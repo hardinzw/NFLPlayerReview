@@ -105,5 +105,41 @@ namespace NFLPlayerReview.Controllers
             return Ok("Reviewer successfully created.");
         }
 
+        [HttpPut("{reviewerID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateReviewer(int reviewerID, [FromBody] ReviewerDto reviewerUpdate)
+        {
+            if (reviewerUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (reviewerID != reviewerUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_reviewerRepository.ReviewerExists(reviewerID))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var reviewerMap = _mapper.Map<Reviewer>(reviewerUpdate);
+
+            if (!_reviewerRepository.UpdateReviewer(reviewerMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Reviewer successuflly updated.");
+        }
     }
 }

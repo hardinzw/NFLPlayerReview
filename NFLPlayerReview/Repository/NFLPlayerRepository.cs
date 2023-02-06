@@ -62,6 +62,12 @@ namespace NFLPlayerReview.Repository
             return Save();
         }
 
+        public bool UpdatePlayer(int teamID, int positionID, NFLPlayer player)
+        {
+            _context.Update(player);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

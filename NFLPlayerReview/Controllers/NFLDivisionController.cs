@@ -124,7 +124,7 @@ namespace NFLPlayerReview.Controllers
 
             if (!_divisionRepository.NFLDivisionExists(divisionID))
             {
-                return NotFound();
+                return NotFound("Team does not exist.");
             }
 
             if (!ModelState.IsValid)
@@ -140,7 +140,7 @@ namespace NFLPlayerReview.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Position successuflly updated.");
+            return Ok("Division successuflly updated.");
         }
     }
 }
