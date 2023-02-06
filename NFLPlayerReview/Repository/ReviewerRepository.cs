@@ -1,4 +1,5 @@
-﻿using NFLPlayerReview.Data;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using NFLPlayerReview.Data;
 using NFLPlayerReview.Interfaces;
 using NFLPlayerReview.Models;
 
@@ -30,6 +31,18 @@ namespace NFLPlayerReview.Repository
         public bool ReviewerExists(int id)
         {
             return _context.Reviewers.Any(r => r.Id == id);
+        }
+
+        public bool CreateReviewer(Reviewer reviewer)
+        {
+            _context.Add(reviewer);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

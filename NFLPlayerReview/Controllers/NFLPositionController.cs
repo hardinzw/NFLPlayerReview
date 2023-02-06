@@ -67,5 +67,39 @@ namespace NFLPlayerReview.Controllers
 
             return Ok(player);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePosition([FromBody] NFLPositionDto positionCreate)
+        {
+            if (positionCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var positions = _positionRepository.GetNFLPositions().Where(p => p.Name.Trim().ToUpper() == positionCreate.Name.TrimEnd().ToUpper()).FirstOrDefault();
+
+            if (positions != null)
+            {
+                ModelState.AddModelError("", "Position already exists.");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var positionMap = _mapper.Map<NFLPosition>(positionCreate);
+
+            if (!_positionRepository.CreatePosition(positionMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Position successuflly created.");
+        }
     }
 }

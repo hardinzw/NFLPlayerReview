@@ -9,5 +9,7 @@ namespace NFLPlayerReview.Interfaces
         NFLDivision GetNFLDivisionByTeam(int teamID);
         ICollection<NFLTeam> GetNFLTeamByDivision(int divisionID);
         bool NFLDivisionExists(int id);
+        bool CreateDivision(NFLDivision division);
+        bool Save();
     }
 }

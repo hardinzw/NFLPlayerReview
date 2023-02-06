@@ -104,7 +104,7 @@ namespace NFLPlayerReview.Controllers
 
             if (!_reviewRepository.CreateReview(reviewMap))
             {
-                ModelState.AddModelError("", "Something went wrong while savin");
+                ModelState.AddModelError("", "Something went wrong...");
                 return StatusCode(500, ModelState);
             }
 

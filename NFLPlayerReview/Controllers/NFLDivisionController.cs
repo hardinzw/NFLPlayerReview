@@ -72,24 +72,38 @@ namespace NFLPlayerReview.Controllers
             return Ok(team);
         }
 
-        //[HttpGet("/divisions/{divisionID}")]
-        //[ProducesResponseType(200, Type = typeof(IEnumerable<NFLTeam>))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetNFLTeamByDivision(int divisionID)
-        //{
-        //    if (!_divisionRepository.NFLDivisionExists(divisionID))
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateDivision([FromBody] NFLDivisionDto divisionCreate)
+        {
+            if (divisionCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    var division = _mapper.Map<NFLTeamDto>(_divisionRepository.GetNFLTeamByDivision(divisionID));
+            var divisions = _divisionRepository.GetNFLDivisions().Where(p => p.Name.Trim().ToUpper() == divisionCreate.Name.TrimEnd().ToUpper()).FirstOrDefault();
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+            if (divisions != null)
+            {
+                ModelState.AddModelError("", "Position already exists.");
+                return StatusCode(422, ModelState);
+            }
 
-        //    return Ok(division);
-        //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var divisionMap = _mapper.Map<NFLDivision>(divisionCreate);
+
+            if (!_divisionRepository.CreateDivision(divisionMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Division successuflly created.");
+        }
     }
 }

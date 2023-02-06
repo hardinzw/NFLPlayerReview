@@ -1,4 +1,5 @@
-﻿using NFLPlayerReview.Data;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using NFLPlayerReview.Data;
 using NFLPlayerReview.Interfaces;
 using NFLPlayerReview.Models;
 
@@ -35,6 +36,18 @@ namespace NFLPlayerReview.Repository
         public bool NFLDivisionExists(int id)
         {
             return _context.NFLDivisions.Any(t => t.Id == id);
+        }
+
+        public bool CreateDivision(NFLDivision division)
+        {
+            _context.Add(division);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
