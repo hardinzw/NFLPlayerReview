@@ -9,5 +9,7 @@ namespace NFLPlayerReview.Interfaces
         ICollection<NFLTeam> GetNFLTeamByPlayer(int playerID);
         ICollection<NFLPlayer> GetNFLPlayerByTeam(int teamID);
         bool NFLTeamExists(int id);
+        bool CreateTeam(NFLTeam team);
+        bool Save();   
     }
 }

@@ -11,11 +11,13 @@ namespace NFLPlayerReview.Controllers
     public class NFLTeamController : Controller
     {
         private readonly INFLTeamRepository _teamRepository;
+        private readonly INFLDivisionRepository _divisionRepository;
         private readonly IMapper _mapper;
 
-        public NFLTeamController(INFLTeamRepository teamRepository, IMapper mapper)
+        public NFLTeamController(INFLTeamRepository teamRepository, INFLDivisionRepository divisionRepository, IMapper mapper)
         {
             _teamRepository = teamRepository;
+            _divisionRepository = divisionRepository;
             _mapper = mapper;
         }
 
@@ -91,6 +93,41 @@ namespace NFLPlayerReview.Controllers
             }
 
             return Ok(player);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateTeam([FromQuery] int divisionID, [FromBody] NFLTeamDto teamCreate)
+        {
+            if (teamCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var teams = _teamRepository.GetNFLTeams().Where(t => t.Name.Trim().ToUpper() == teamCreate.Name.TrimEnd().ToUpper()).FirstOrDefault();
+
+            if (teams != null)
+            {
+                ModelState.AddModelError("", "Team already exists.");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var teamMap = _mapper.Map<NFLTeam>(teamCreate);
+            teamMap.Division = _divisionRepository.GetNFLDivisionByID(divisionID);
+
+            if (!_teamRepository.CreateTeam(teamMap))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Team created.");
         }
     }
 }

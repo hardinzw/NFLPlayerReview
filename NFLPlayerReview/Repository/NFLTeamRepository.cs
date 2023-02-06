@@ -1,4 +1,5 @@
-﻿using NFLPlayerReview.Data;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using NFLPlayerReview.Data;
 using NFLPlayerReview.Interfaces;
 using NFLPlayerReview.Models;
 using SQLitePCL;
@@ -36,6 +37,18 @@ namespace NFLPlayerReview.Repository
         public bool NFLTeamExists(int id)
         {
             return _context.NFLTeams.Any(t => t.Id == id);
+        }
+
+        public bool CreateTeam(NFLTeam team)
+        {
+            _context.Add(team);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
