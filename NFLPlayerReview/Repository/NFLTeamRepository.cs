@@ -51,6 +51,12 @@ namespace NFLPlayerReview.Repository
             return Save();
         }
 
+        public bool DeleteTeam(NFLTeam team)
+        {
+            _context.Remove(team);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

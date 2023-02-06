@@ -11,6 +11,7 @@ namespace NFLPlayerReview.Interfaces
         bool NFLDivisionExists(int id);
         bool CreateDivision(NFLDivision division);
         bool UpdateDivision(NFLDivision division);
+        bool DeleteDivision(NFLDivision division);
         bool Save();
     }
 }

@@ -108,7 +108,7 @@ namespace NFLPlayerReview.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Player created.");
+            return Ok("Player succesfully created.");
         }
 
         [HttpPut("{playerID}")]
@@ -146,6 +146,33 @@ namespace NFLPlayerReview.Controllers
             }
 
             return Ok("Player successuflly updated.");
+        }
+
+        [HttpDelete("{playerID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeletePlayer(int playerID)
+        {
+            if (!_playerRepository.NFLPlayerExists(playerID))
+            {
+                return NotFound();
+            }
+
+            var playerToDelete = _playerRepository.GetNFLPlayerByID(playerID);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_playerRepository.DeletePlayer(playerToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Player successuflly deleted.");
         }
     }
 }

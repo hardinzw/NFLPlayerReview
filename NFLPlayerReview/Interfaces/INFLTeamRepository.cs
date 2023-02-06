@@ -11,6 +11,7 @@ namespace NFLPlayerReview.Interfaces
         bool NFLTeamExists(int id);
         bool CreateTeam(NFLTeam team);
         bool UpdateTeam(NFLTeam team);
+        bool DeleteTeam(NFLTeam team);
         bool Save();   
     }
 }

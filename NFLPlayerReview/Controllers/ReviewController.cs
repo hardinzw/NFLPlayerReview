@@ -147,5 +147,32 @@ namespace NFLPlayerReview.Controllers
 
             return Ok("Review successuflly updated.");
         }
+
+        [HttpDelete("{reviewID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReview(int reviewID)
+        {
+            if (!_reviewRepository.ReviewExists(reviewID))
+            {
+                return NotFound();
+            }
+
+            var reviewToDelete = _reviewRepository.GetReviewByID(reviewID);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_reviewRepository.DeleteReview(reviewToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Review successuflly deleted.");
+        }
     }
 }

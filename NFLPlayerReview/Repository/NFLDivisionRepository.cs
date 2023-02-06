@@ -50,6 +50,12 @@ namespace NFLPlayerReview.Repository
             return Save();
         }
 
+        public bool DeleteDivision(NFLDivision division)
+        {
+            _context.Remove(division);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

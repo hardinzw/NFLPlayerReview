@@ -124,7 +124,7 @@ namespace NFLPlayerReview.Controllers
 
             if (!_divisionRepository.NFLDivisionExists(divisionID))
             {
-                return NotFound("Team does not exist.");
+                return NotFound();
             }
 
             if (!ModelState.IsValid)
@@ -141,6 +141,33 @@ namespace NFLPlayerReview.Controllers
             }
 
             return Ok("Division successuflly updated.");
+        }
+
+        [HttpDelete("{divisionID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteDivision(int divisionID)
+        {
+            if (!_divisionRepository.NFLDivisionExists(divisionID))
+            {
+                return NotFound();
+            }
+
+            var divisionToDelete = _divisionRepository.GetNFLDivisionByID(divisionID);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_divisionRepository.DeleteDivision(divisionToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Division successuflly deleted.");
         }
     }
 }

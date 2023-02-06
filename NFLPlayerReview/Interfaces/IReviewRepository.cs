@@ -10,6 +10,7 @@ namespace NFLPlayerReview.Interfaces
         bool ReviewExists(int id);
         bool CreateReview(Review review);
         bool UpdateReview(Review review);
+        bool DeleteReview(Review review);
         bool Save();
     }
 }

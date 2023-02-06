@@ -68,6 +68,12 @@ namespace NFLPlayerReview.Repository
             return Save();
         }
 
+        public bool DeletePlayer(NFLPlayer player)
+        {
+            _context.Remove(player);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

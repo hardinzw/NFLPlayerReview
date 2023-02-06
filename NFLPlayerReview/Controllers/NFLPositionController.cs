@@ -138,5 +138,32 @@ namespace NFLPlayerReview.Controllers
 
             return Ok("Position successuflly updated.");
         }
+
+        [HttpDelete("{positionID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeletePosition(int positionID)
+        {
+            if (!_positionRepository.NFLPositionExists(positionID))
+            {
+                return NotFound();
+            }
+
+            var positionToDelete = _positionRepository.GetNFLPositionByID(positionID);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_positionRepository.DeletePosition(positionToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Position successuflly deleted.");
+        }
     }
 }

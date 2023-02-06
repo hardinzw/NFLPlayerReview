@@ -45,6 +45,12 @@ namespace NFLPlayerReview.Repository
             return Save();
         }
 
+        public bool DeleteReview(Review review)
+        {
+            _context.Remove(review);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

@@ -127,7 +127,7 @@ namespace NFLPlayerReview.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Team created.");
+            return Ok("Team successfully created.");
         }
 
         [HttpPut("{teamID}")]
@@ -165,6 +165,33 @@ namespace NFLPlayerReview.Controllers
             }
 
             return Ok("Team successuflly updated.");
+        }
+
+        [HttpDelete("{teamID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteTeam(int teamID)
+        {
+            if (!_teamRepository.NFLTeamExists(teamID))
+            {
+                return NotFound();
+            }
+
+            var teamToDelete = _teamRepository.GetNFLTeamByID(teamID);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_teamRepository.DeleteTeam(teamToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Team successuflly deleted.");
         }
     }
 }

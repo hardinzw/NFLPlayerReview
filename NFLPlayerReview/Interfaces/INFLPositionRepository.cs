@@ -10,6 +10,7 @@ namespace NFLPlayerReview.Interfaces
         bool NFLPositionExists(int id);
         bool CreatePosition(NFLPosition position);
         bool UpdatePosition(NFLPosition position);
+        bool DeletePosition(NFLPosition position);
         bool Save();
     }
 }
